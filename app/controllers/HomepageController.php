@@ -4,7 +4,7 @@ Class HomepageController extends Controller
   public function index()
   {
     $data = [
-      'title' => "PizzaXL"
+      'title' => "Pizza's"
     ];
     $this->view('pizzaxl/homepage', $data);
   }

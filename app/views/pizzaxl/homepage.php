@@ -31,7 +31,27 @@
   </div>
 </nav>
 <h3 class="text-center"><?= $data['title'] ?></h3>
+<div class="container">
+<div class="row">
+    <div style="background-color: azure;" class="col-2">
+        <!-- Add some content to fill the left column -->
+        Left Column Content
+    </div>
+    <div style="background-color: yellow;" class="col-10">
+        <!-- Add some content to fill the right column -->
+        Right Column Content
+    </div>
+</div>
+</div>
 
+<style>
+    html, body {
+        height: 100%;
+    }
+
+    .container {
+        height: 100%;
+    }
+</style>
 </body>
 </html>
-
