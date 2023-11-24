@@ -1,18 +1,4 @@
-.bx {
-  font-size: 5rem;
-}
-table,
-th,
-td {
-  border: 1px solid;
-  font-size: 25px;
+.image_picture{
+    width: 30%;
 }
 
-.bx-question-mark {
-  color: blue;
-  font-size: 50px;
-}
-.bx-x {
-  color: red;
-  font-size: 50px;
-}

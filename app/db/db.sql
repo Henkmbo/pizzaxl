@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 17 okt 2023 om 17:11
+-- Gegenereerd op: 30 okt 2023 om 12:48
 -- Serverversie: 10.4.27-MariaDB
 -- PHP-versie: 8.2.0
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `pizzaxl`
+-- Database: `pizzaxxl`
 --
 
 -- --------------------------------------------------------
@@ -32,38 +32,54 @@ CREATE TABLE `customers` (
   `customerFirstName` varchar(255) NOT NULL,
   `customerLastName` varchar(255) NOT NULL,
   `customerAdress` varchar(255) NOT NULL,
-  `customerLocation` varchar(255) NOT NULL,
-  `customerZipcode` varchar(10) NOT NULL,
   `customerPhone` varchar(10) NOT NULL,
   `customerEmail` varchar(30) NOT NULL,
   `customerIsActive` tinyint(1) NOT NULL DEFAULT 1,
-  `customerCreateDate` varchar(10) NOT NULL,
-  `Description` text NOT NULL
+  `Customercreatedate` int(10) NOT NULL,
+  `CustomerDescription` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `ingedienten`
+-- Tabelstructuur voor tabel `employees`
 --
 
-CREATE TABLE `ingedienten` (
-  `ingedientenId` varchar(4) NOT NULL,
-  `IngedientenName` varchar(255) NOT NULL,
-  `ingedientenIsActive` tinyint(1) NOT NULL DEFAULT 1,
-  `ingedientenCreateDate` varchar(10) NOT NULL,
-  `ingedientenDescription` text NOT NULL
+CREATE TABLE `employees` (
+  `employeeId` varchar(4) NOT NULL,
+  `employeeStoreId` varchar(4) NOT NULL,
+  `employeeName` varchar(255) NOT NULL,
+  `employeeRole` enum('Manager','chef','deliverer') NOT NULL,
+  `employeeIsActive` tinyint(1) NOT NULL DEFAULT 1,
+  `employeeCreateDate` int(10) NOT NULL,
+  `employeeDescription` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `orderhaspizza`
+-- Tabelstructuur voor tabel `ingredients`
 --
 
-CREATE TABLE `orderhaspizza` (
+CREATE TABLE `ingredients` (
+  `ingredientId` varchar(4) NOT NULL,
+  `ingredientName` varchar(255) NOT NULL,
+  `ingredientPrice` decimal(2,2) NOT NULL,
+  `ingredientIsActive` tinyint(1) NOT NULL DEFAULT 1,
+  `ingredientCreatedate` int(10) NOT NULL,
+  `ingredientDescription` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `orderhasproducts`
+--
+
+CREATE TABLE `orderhasproducts` (
+  `productId` varchar(4) NOT NULL,
   `orderId` varchar(4) NOT NULL,
-  `pizzaId` varchar(4) NOT NULL
+  `productPrice` decimal(2,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -74,37 +90,109 @@ CREATE TABLE `orderhaspizza` (
 
 CREATE TABLE `orders` (
   `orderId` varchar(4) NOT NULL,
-  `orderStatus` varchar(255) NOT NULL,
+  `orderStoreId` varchar(4) NOT NULL,
+  `orderState` varchar(255) NOT NULL,
+  `orderPrice` decimal(6,2) NOT NULL,
+  `orderStatus` enum('Succes','Pending','Failed') NOT NULL,
+  `orderCustomerId` varchar(4) NOT NULL,
   `orderIsActive` tinyint(1) NOT NULL DEFAULT 1,
-  `orderCreateDate` varchar(10) NOT NULL,
-  `orderDescription` text NOT NULL,
-  `CustomerId` varchar(4) NOT NULL
+  `orderCreatedate` int(10) NOT NULL,
+  `orderDescription` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `pizza`
+-- Tabelstructuur voor tabel `products`
 --
 
-CREATE TABLE `pizza` (
-  `pizzaId` varchar(4) NOT NULL,
-  `pizzaName` varchar(30) NOT NULL,
-  `pizzaPrice` float NOT NULL,
-  `pizzaIsActive` tinyint(1) NOT NULL DEFAULT 1,
-  `pizzaCreateDate` varchar(10) NOT NULL,
-  `pizzaDescription` text NOT NULL
+CREATE TABLE `products` (
+  `productId` varchar(4) NOT NULL,
+  `productname` varchar(30) NOT NULL,
+  `productCategory` enum('pizza','drinks','snacks','coupons','custompizza') NOT NULL,
+  `productPrice` decimal(6,2) NOT NULL,
+  `productIsActive` tinyint(1) NOT NULL DEFAULT 1,
+  `productCreatedate` int(10) NOT NULL,
+  `productDescription` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `pizzahasingedienten`
+-- Tabelstructuur voor tabel `productshasingredients`
 --
 
-CREATE TABLE `pizzahasingedienten` (
-  `pizzaId` varchar(4) NOT NULL,
-  `ingedientenId` varchar(4) NOT NULL
+CREATE TABLE `productshasingredients` (
+  `ingredientId` varchar(4) NOT NULL,
+  `productId` varchar(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `promotions`
+--
+
+CREATE TABLE `promotions` (
+  `promotionId` varchar(4) NOT NULL,
+  `promotionName` varchar(255) NOT NULL,
+  `promotionStartDate` int(10) NOT NULL,
+  `promotionEndDate` int(10) NOT NULL,
+  `promotionPathA` varchar(255) NOT NULL,
+  `promotionPathB` varchar(255) NOT NULL,
+  `promotionPathC` int(255) NOT NULL,
+  `promotionIsActive` tinyint(1) NOT NULL DEFAULT 1,
+  `promotionCreateDate` int(10) NOT NULL,
+  `promotionDescription` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `reviewId` varchar(4) NOT NULL,
+  `reviewCustomerId` varchar(4) NOT NULL,
+  `reviewOrderId` varchar(4) NOT NULL,
+  `reviewRating` enum('1','2','3','4','5') NOT NULL,
+  `reviewText` varchar(255) NOT NULL,
+  `reviewIsActive` tinyint(1) NOT NULL DEFAULT 1,
+  `reviewCreateDate` int(10) NOT NULL,
+  `reviewDescription` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `stores`
+--
+
+CREATE TABLE `stores` (
+  `storeId` varchar(4) NOT NULL,
+  `storeName` varchar(255) NOT NULL,
+  `storeAddress` varchar(255) NOT NULL,
+  `storeLocation` varchar(255) NOT NULL,
+  `storeZipcode` varchar(6) NOT NULL,
+  `storeIsActive` tinyint(1) NOT NULL DEFAULT 1,
+  `storeCreateDate` int(10) NOT NULL,
+  `storeDescription` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `vehicles`
+--
+
+CREATE TABLE `vehicles` (
+  `vehicleId` varchar(4) NOT NULL,
+  `vehicleStoreId` varchar(4) NOT NULL,
+  `vehicleType` enum('Car','Bike','Scooter') NOT NULL,
+  `vehicleIsActive` tinyint(1) NOT NULL DEFAULT 1,
+  `vehicleCreateDate` int(10) NOT NULL,
+  `vehicleDescription` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -118,61 +206,64 @@ ALTER TABLE `customers`
   ADD PRIMARY KEY (`customerId`);
 
 --
--- Indexen voor tabel `ingedienten`
+-- Indexen voor tabel `employees`
 --
-ALTER TABLE `ingedienten`
-  ADD PRIMARY KEY (`ingedientenId`);
+ALTER TABLE `employees`
+  ADD PRIMARY KEY (`employeeId`);
 
 --
--- Indexen voor tabel `orderhaspizza`
+-- Indexen voor tabel `ingredients`
 --
-ALTER TABLE `orderhaspizza`
-  ADD PRIMARY KEY (`orderId`,`pizzaId`),
-  ADD KEY `pizzaId` (`pizzaId`);
+ALTER TABLE `ingredients`
+  ADD PRIMARY KEY (`ingredientId`);
+
+--
+-- Indexen voor tabel `orderhasproducts`
+--
+ALTER TABLE `orderhasproducts`
+  ADD PRIMARY KEY (`productId`,`orderId`);
 
 --
 -- Indexen voor tabel `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`orderId`),
-  ADD KEY `CustomerId` (`CustomerId`);
+  ADD PRIMARY KEY (`orderId`);
 
 --
--- Indexen voor tabel `pizza`
+-- Indexen voor tabel `products`
 --
-ALTER TABLE `pizza`
-  ADD PRIMARY KEY (`pizzaId`);
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`productId`);
 
 --
--- Indexen voor tabel `pizzahasingedienten`
+-- Indexen voor tabel `productshasingredients`
 --
-ALTER TABLE `pizzahasingedienten`
-  ADD PRIMARY KEY (`pizzaId`,`ingedientenId`),
-  ADD KEY `ingedientenId` (`ingedientenId`);
+ALTER TABLE `productshasingredients`
+  ADD PRIMARY KEY (`ingredientId`,`productId`);
 
 --
--- Beperkingen voor geëxporteerde tabellen
+-- Indexen voor tabel `promotions`
 --
+ALTER TABLE `promotions`
+  ADD PRIMARY KEY (`promotionId`);
 
 --
--- Beperkingen voor tabel `orderhaspizza`
+-- Indexen voor tabel `reviews`
 --
-ALTER TABLE `orderhaspizza`
-  ADD CONSTRAINT `orderhaspizza_ibfk_1` FOREIGN KEY (`orderId`) REFERENCES `orders` (`orderId`),
-  ADD CONSTRAINT `orderhaspizza_ibfk_2` FOREIGN KEY (`pizzaId`) REFERENCES `pizza` (`pizzaId`);
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`reviewId`);
 
 --
--- Beperkingen voor tabel `orders`
+-- Indexen voor tabel `stores`
 --
-ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`CustomerId`) REFERENCES `customers` (`customerId`);
+ALTER TABLE `stores`
+  ADD PRIMARY KEY (`storeId`);
 
 --
--- Beperkingen voor tabel `pizzahasingedienten`
+-- Indexen voor tabel `vehicles`
 --
-ALTER TABLE `pizzahasingedienten`
-  ADD CONSTRAINT `pizzahasingedienten_ibfk_1` FOREIGN KEY (`pizzaId`) REFERENCES `pizza` (`pizzaId`),
-  ADD CONSTRAINT `pizzahasingedienten_ibfk_2` FOREIGN KEY (`ingedientenId`) REFERENCES `ingedienten` (`ingedientenId`);
+ALTER TABLE `vehicles`
+  ADD PRIMARY KEY (`vehicleId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
